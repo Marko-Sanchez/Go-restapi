@@ -1,23 +1,16 @@
 package main
 
 import (
+    "Go-restapi/handlers"
     "fmt"
     "net/http"
     "os"
 )
 
-func rootHandler(w http.ResponseWriter, r *http.Request) {
-    if r.URL.Path != "/" {
-        w.WriteHeader(http.StatusNotFound)
-        w.Write([]byte("Asset Not Found\n"))
-        return
-    }
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("Welcome to Marko's Rest API\n"))
-}
-
 func main() {
-    http.HandleFunc("/", rootHandler)
+    http.HandleFunc("/users/", handlers.UsersRouter)
+    http.HandleFunc("/users", handlers.UsersRouter)
+    http.HandleFunc("/", handlers.RootHandler)
 
     err := http.ListenAndServe("localhost:1111", nil)
     if err!= nil {
