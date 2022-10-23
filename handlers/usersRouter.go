@@ -11,16 +11,18 @@ import (
 func UsersRouter(w http.ResponseWriter, r *http.Request) {
     path := strings.TrimSuffix(r.URL.Path, "/")
 
-    // all users
+    // query all users, or create a new user
     if path == "/users" {
         switch r.Method {
         case http.MethodGet:
             usersGetAll(w, r)
             return
         case http.MethodPost:
+            usersPostOne(w, r)
             return
         default:
             postError(w, http.StatusMethodNotAllowed)
+            return
         }
     }
 
