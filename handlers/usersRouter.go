@@ -8,6 +8,8 @@ import (
 )
 
 // Handles the users route
+// @param: r {*http.Request} holds clients request.
+//         w {http.ResponseWriter} structure lets us reply to client.
 func UsersRouter(w http.ResponseWriter, r *http.Request) {
     path := strings.TrimSuffix(r.URL.Path, "/")
 
@@ -26,6 +28,7 @@ func UsersRouter(w http.ResponseWriter, r *http.Request) {
         }
     }
 
+    // grab ID passed by client
     path = strings.TrimPrefix(path, "/users/")
     if !bson.IsObjectIdHex(path) {
         postError(w, http.StatusNotFound)
@@ -33,15 +36,19 @@ func UsersRouter(w http.ResponseWriter, r *http.Request) {
     }
 
     // single user
-    // id := bson.ObjectIdHex(path)
+    id := bson.ObjectIdHex(path)
     switch r.Method {
     case http.MethodGet:
+        usersGetOne(w, r, id)
         return
-    case http.MethodPost:
+    case http.MethodPut:
+        usersPutOne(w, r, id)
         return
     case http.MethodPatch:
+        usersPatchOne(w, r, id)
         return
     case http.MethodDelete:
+        usersDeleteOne(w, r, id)
         return
     default:
         postError(w, http.StatusMethodNotAllowed)

@@ -11,7 +11,7 @@ func postError(w http.ResponseWriter, code int) {
     http.Error(w, http.StatusText(code), code)
 }
 
-// Sends response to server
+// makes a http reponse to client
 func postBodyResponse(w http.ResponseWriter, code int, content jsonResponse) {
     if content != nil {
         // convert content to a json byte sequence
